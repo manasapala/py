@@ -1,0 +1,80 @@
+from StdSuites.Type_Names_Suite import null  
+# Defining a Room class with it attributes
+class Room:
+    def __init__(self, rNO, capacity, fNO): 
+        self.rNO = rNO
+        self.capacity = capacity
+        self.fNO = fNO
+# Defining a Availability class with it attributes
+class Availability:
+    def __init__(self, room, startTime, endTime):
+        self.room = room
+        self.startTime = startTime
+        self.endTime = endTime
+def dataSetup():
+    # We could read the file and do the following, but for keeping the program
+    # simple, I am just loading the given data into Arraylist
+    roomList = []
+    roomList.insert(1, Room(11, 8, 7)) 
+    roomList.insert(2, Room(23, 6, 8))
+    roomList.insert(3, Room(43, 7, 8))
+    roomList.insert(4, Room(511, 11, 9))
+    roomList.insert(5, Room(527, 4, 9))
+    roomList.insert(6, Room(547, 8, 9))
+    availabilityList = []
+    availabilityList.insert(1, Availability(roomList[0], "9:00", "9:15"))
+    availabilityList.insert(2, Availability(roomList[0], "14:30", "15:00"))   
+    availabilityList.insert(3, Availability(roomList[1], "10:00", "11:00"))
+    availabilityList.insert(4, Availability(roomList[1], "14:00", "15:00"))
+    availabilityList.insert(5, Availability(roomList[2], "11:30", "12:30"))
+    availabilityList.insert(6, Availability(roomList[2], "17:00", "17:30"))
+    availabilityList.insert(7, Availability(roomList[3], "9:30", "10:30"))
+    availabilityList.insert(8, Availability(roomList[3], "12:00", "12:15"))
+    availabilityList.insert(9, Availability(roomList[3], "15:15", "16:15"))
+    availabilityList.insert(10, Availability(roomList[4], "9:00", "11:00"))
+    availabilityList.insert(11, Availability(roomList[4], "14:00", "16:00"))
+    availabilityList.insert(12, Availability(roomList[5], "10:30", "11:30"))
+    availabilityList.insert(13, Availability(roomList[5], "13:30", "15:30"))
+    availabilityList.insert(14, Availability(roomList[5], "16:30", "17:30"))
+    return availabilityList
+
+# Reading input data from the users
+team_members = raw_input("Number of team members: ")
+floor = raw_input("Please provide your floor number: ")
+start_time = raw_input("Please specify meeting start time: ")
+end_time = raw_input("Please specify meeting end time: ")
+
+# Verify that we have our needed input parameters
+# Load given data in the file into an array
+availabilityList = dataSetup()
+availableRoomsList = []
+# Traverse through the all avaliabilities to see which availabilities match the time provided
+index = 1
+stList = start_time.split(":")
+etList = end_time.split(":")
+stTime = stList[0]*60 + stList[1]
+etTime = etList[0]*60 + etList[1]
+for time in availabilityList:
+    cstList = time.startTime.split(":")
+    cetList = time.endTime.split(":")
+    cstTime = cstList[0]*60 + cstList[1]
+    cetTime = cetList[0]*60 + cetList[1]
+    if stList <= cstTime and cetTime >= etTime:
+        availableRoomsList.insert(index,time)
+        index=+index
+# Once we have the availabilities, check which floor is near to the Team's floor
+# When two or more floors are in the same distance, select the one that is processed currently       
+tempRoom = null;
+for t in availableRoomsList:
+    if(tempRoom != null):
+        var1 = int(tempRoom.room.fNO) - int(floor)
+        var2 = int(t.room.fNO) - int(floor)
+        if(abs(var1) <= abs(var2)):
+            tempRoom = t;
+    else:
+        tempRoom = t;
+print("Your Available Room: ")
+print(tempRoom.room.rNO)
+print("Your Available Floor: ")
+print(tempRoom.room.fNO) 
+
